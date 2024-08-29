@@ -17,54 +17,7 @@ import pandas as pd
 
 ##################--------------------Vars--------------------------##########################
 
-#############---------This is just the csv data frams----------------------#########
-high_Grad_rate = pd.read_csv('Data/high income.csv')
-low_Grad_rate = pd.read_csv('Data/low income.csv')
-
-#################---------This is adding the whole city csv
-all_City_csv = pd.read_csv('Data/uscities.csv')
-
-#print(all_City_csv["city"][3])
-
-totalItmes = ""
-
-for i in all_City_csv["state_id"]:
-    
-
-    if(all_City_csv["city"][i] = "NY"):
-        print('hi')
-
-
-
-#################-------------------This is the sorted by the names----------------------###################
-sorted_high_Name = high_Grad_rate.sort_values(by=['Name'], ascending=True)
-sorted_Low_Name = low_Grad_rate.sort_values(by=['Name'], ascending=True)
-
-##############----------This is the total rec------------#########
-high_total_rec = len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"])-1
-low_total_rec = len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1
-
-##############----------This is the avg of the american-----------#########
-avg_of_america_high = high_Grad_rate["College_Graduation_Rate_rP_gP_p75"].sum() / high_total_rec
-avg_of_america_low = low_Grad_rate["College_Graduation_Rate_rP_gP_p25"].sum() / low_total_rec
-
-plt.scatter(avg_of_america_high, avg_of_america_high)
-plt.scatter(avg_of_america_low, avg_of_america_low)
-
-plt.title('Graduation Rate: Low income and high income familys')
-
-plt.xlabel('Graduration rate')
-plt.ylabel('Graduration rate')
-
-
-plt.show()
-
-
-##################--------------------Functions--------------------------##########################
-
-#this is a data frame of all the states and there aberavation
 abbreviation_to_name = {
-    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#States.
     "AK": "Alaska",
     "AL": "Alabama",
     "AR": "Arkansas",
@@ -115,9 +68,7 @@ abbreviation_to_name = {
     "WI": "Wisconsin",
     "WV": "West Virginia",
     "WY": "Wyoming",
-    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Federal_district.
     "DC": "District of Columbia",
-    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Inhabited_territories.
     "AS": "American Samoa",
     "GU": "Guam GU",
     "MP": "Northern Mariana Islands",
@@ -125,7 +76,144 @@ abbreviation_to_name = {
     "VI": "U.S. Virgin Islands"
 }
 
-print(abbreviation_to_name["VI"])
+#print(len(abbreviation_to_name))
+
+
+#############---------This is just the csv data frams----------------------#########
+high_Grad_rate = pd.read_csv('Data/high income.csv')
+low_Grad_rate = pd.read_csv('Data/low income.csv')
+
+#################---------This is adding the whole city csv
+all_City_csv = pd.read_csv('Data/uscities.csv')
+all_city_arrary = all_City_csv.to_numpy()
+# print(all_city_arrary[12][0])
+
+
+firstLoop = 0
+nextLoop = 0
+
+wasIf = 0
+
+for c in all_City_csv["city"]:
+    for i in high_Grad_rate["Name"]:
+        if(i == c):
+            print(firstLoop,' ', nextLoop, "it was in at ", c, wasIf)
+            wasIf += 1
+
+        nextLoop += 1
+
+    
+    firstLoop += 1
+
+
+# for i in range(0,len(abbreviation_to_name)):
+#     for c in range(0, len(all_city_arrary)):
+#         print(i,c)
+
+# print(np.isin(all_city_arrary[1][1], all_city_arrary[0][0]))
+
+# if(np.isin(all_city_arrary[0][0], all_city_arrary[0][0])):
+#     print('me')
+# else:
+#     print('not me')
+
+#print(all_city_arrary[0])
+
+#running 30k times or each city is being persented
+
+
+# for i in range(0, len(high_Grad_rate)):
+#     for c in all_City_csv["city"]:
+#         print(i,' ',c)
+
+
+# for i in range(0, len(all_city_arrary)):
+
+#     for c in all_City_csv["city"]:
+#         print(c)
+#         # if(all_city_arrary[i][0] == c):
+#         #     print("is in", c ," with ", i)
+#         #     print(all_city_arrary[i])
+#     # if(np.isin(i, all_City_csv["city"])):
+        
+
+
+
+# for i in range(0, len(all_city_arrary)):
+
+#     for n in high_Grad_rate["Name"]:
+#         print(n)
+
+#     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHERE", i)
+
+    
+
+#     # if(np.isin(all_City_csv["city"].any(), i)):
+#     #     print(i)
+#     # else:
+#     #     print("umm")
+
+
+
+# if(np.isin(high_Grad_rate["Name"].any(), all_city_arrary[0] )):
+#     print('True')
+
+
+#     # if(all_city_arrary[indexer][0] == ):
+#     #     print(i)
+
+
+
+
+#     indexer += 1
+
+#     # if(i == "RI"):
+#     #     print(all_City_csv["city"])
+
+
+
+
+#################-------------------This is the sorted by the names----------------------###################
+sorted_high_Name = high_Grad_rate.sort_values(by=['Name'], ascending=True)
+sorted_Low_Name = low_Grad_rate.sort_values(by=['Name'], ascending=True)
+
+##############----------This is the total rec------------#########
+high_total_rec = len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"])-1
+low_total_rec = len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1
+
+
+
+
+
+
+
+
+
+
+
+
+##############----------This is the avg of the american-----------#########
+avg_of_america_high = high_Grad_rate["College_Graduation_Rate_rP_gP_p75"].sum() / high_total_rec
+avg_of_america_low = low_Grad_rate["College_Graduation_Rate_rP_gP_p25"].sum() / low_total_rec
+
+plt.scatter(avg_of_america_high, avg_of_america_high)
+plt.scatter(avg_of_america_low, avg_of_america_low)
+
+plt.title('Graduation Rate: Low income and high income familys')
+
+plt.xlabel('Graduration rate')
+plt.ylabel('Graduration rate')
+
+
+plt.show()
+
+
+##################--------------------Functions--------------------------##########################
+
+#this is a data frame of all the states and there aberavation
+
+
+
 
 
 ##################--------------------Main Code--------------------------##########################
