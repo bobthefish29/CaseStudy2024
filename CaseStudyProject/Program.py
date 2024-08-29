@@ -3,6 +3,11 @@
 #Kerry
 
 
+#FOr the next person to look at this, im going to toss in the towel for rn, its been like 7 hours straght my brain is fryed
+
+#ill pick up with the lists tmr
+
+
 #This is where the main program is going to live,
 
 #i just hope we dont have to bring it into anaconda to make it run or anything
@@ -16,6 +21,7 @@ import pandas as pd
 
 
 ##################--------------------Vars--------------------------##########################
+addbrevLIst = ["RI"]
 
 abbreviation_to_name = {
     "AK": "Alaska",
@@ -89,22 +95,36 @@ all_city_arrary = all_City_csv.to_numpy()
 # print(all_city_arrary[12][0])
 
 
-firstLoop = 0
-nextLoop = 0
+
 
 wasIf = 0
+firstLoop = 0
 
-for c in all_City_csv["city"]:
-    for i in high_Grad_rate["Name"]:
-        if(i == c):
-            print(firstLoop,' ', nextLoop, "it was in at ", c, wasIf)
-            wasIf += 1
+riList = []
+for i in range(0, len(all_city_arrary)):
 
-        nextLoop += 1
+    if(all_city_arrary[i][2] == 'RI'):
+        riList.append(all_city_arrary[i][1])
+
+    #for sn in range(0, len(addbrevLIst)):
+        
+        #if(all_city_arrary[i][2] == addbrevLIst[sn]):
+            
+
+        #all_city_arrary[i][2]
+#     print(c)
+#     # nextLoop = 0
+#     # for i in high_Grad_rate["Name"]:
+        
+#     #     if(i == c):
+#     #         print(firstLoop,'',nextLoop, "it was in at ", c, wasIf)
+#     #         wasIf += 1
+
+#     #     nextLoop += 1
 
     
-    firstLoop += 1
-
+#     # firstLoop += 1
+print(riList)
 
 # for i in range(0,len(abbreviation_to_name)):
 #     for c in range(0, len(all_city_arrary)):
