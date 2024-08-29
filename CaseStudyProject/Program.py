@@ -3,14 +3,9 @@
 #Kerry
 
 
-
-
 #This is where the main program is going to live,
 
-#  i just hope we dont have to bring it into anaconda to make it run or anything
-
-
-
+#i just hope we dont have to bring it into anaconda to make it run or anything
 
 
 
@@ -21,31 +16,178 @@ import pandas as pd
 
 
 ##################--------------------Vars--------------------------##########################
+
+#############---------This is just the csv data frams----------------------#########
 high_Grad_rate = pd.read_csv('Data/high income.csv')
 low_Grad_rate = pd.read_csv('Data/low income.csv')
+
+#################---------This is adding the whole city csv
+all_City_csv = pd.read_csv('Data/uscities.csv')
+
+#print(all_City_csv["city"][3])
+
+totalItmes = ""
+
+for i in all_City_csv["state_id"]:
+    
+
+    if(all_City_csv["city"][i] = "NY"):
+        print('hi')
+
+
+
+#################-------------------This is the sorted by the names----------------------###################
+sorted_high_Name = high_Grad_rate.sort_values(by=['Name'], ascending=True)
+sorted_Low_Name = low_Grad_rate.sort_values(by=['Name'], ascending=True)
+
+##############----------This is the total rec------------#########
+high_total_rec = len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"])-1
+low_total_rec = len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1
+
+##############----------This is the avg of the american-----------#########
+avg_of_america_high = high_Grad_rate["College_Graduation_Rate_rP_gP_p75"].sum() / high_total_rec
+avg_of_america_low = low_Grad_rate["College_Graduation_Rate_rP_gP_p25"].sum() / low_total_rec
+
+plt.scatter(avg_of_america_high, avg_of_america_high)
+plt.scatter(avg_of_america_low, avg_of_america_low)
+
+plt.title('Graduation Rate: Low income and high income familys')
+
+plt.xlabel('Graduration rate')
+plt.ylabel('Graduration rate')
+
+
+plt.show()
 
 
 ##################--------------------Functions--------------------------##########################
 
+#this is a data frame of all the states and there aberavation
+abbreviation_to_name = {
+    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#States.
+    "AK": "Alaska",
+    "AL": "Alabama",
+    "AR": "Arkansas",
+    "AZ": "Arizona",
+    "CA": "California",
+    "CO": "Colorado",
+    "CT": "Connecticut",
+    "DE": "Delaware",
+    "FL": "Florida",
+    "GA": "Georgia",
+    "HI": "Hawaii",
+    "IA": "Iowa",
+    "ID": "Idaho",
+    "IL": "Illinois",
+    "IN": "Indiana",
+    "KS": "Kansas",
+    "KY": "Kentucky",
+    "LA": "Louisiana",
+    "MA": "Massachusetts",
+    "MD": "Maryland",
+    "ME": "Maine",
+    "MI": "Michigan",
+    "MN": "Minnesota",
+    "MO": "Missouri",
+    "MS": "Mississippi",
+    "MT": "Montana",
+    "NC": "North Carolina",
+    "ND": "North Dakota",
+    "NE": "Nebraska",
+    "NH": "New Hampshire",
+    "NJ": "New Jersey",
+    "NM": "New Mexico",
+    "NV": "Nevada",
+    "NY": "New York",
+    "OH": "Ohio",
+    "OK": "Oklahoma",
+    "OR": "Oregon",
+    "PA": "Pennsylvania",
+    "RI": "Rhode Island",
+    "SC": "South Carolina",
+    "SD": "South Dakota",
+    "TN": "Tennessee",
+    "TX": "Texas",
+    "UT": "Utah",
+    "VA": "Virginia",
+    "VT": "Vermont",
+    "WA": "Washington",
+    "WI": "Wisconsin",
+    "WV": "West Virginia",
+    "WY": "Wyoming",
+    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Federal_district.
+    "DC": "District of Columbia",
+    # https://en.wikipedia.org/wiki/List_of_states_and_territories_of_the_United_States#Inhabited_territories.
+    "AS": "American Samoa",
+    "GU": "Guam GU",
+    "MP": "Northern Mariana Islands",
+    "PR": "Puerto Rico PR",
+    "VI": "U.S. Virgin Islands"
+}
+
+print(abbreviation_to_name["VI"])
 
 
 ##################--------------------Main Code--------------------------##########################
 
 #print(low_Grad_rate.head())
 
+
+
 #this is just to have them sorted
-sorted_high = high_Grad_rate["Name"].sort_values()
-sorted_Low = low_Grad_rate["Name"].sort_values()
-
-
-#print(sorted_Low)
 
 
 
+#print("high")
+#print(high_Grad_rate["Name"][39])
+
+#print("High")
+#print(sorted_high["Name"][39])
+
+#total = 0
+
+#for i in high_Grad_rate["Name"]:
+    #total += 1
+    
+#print(total)
+
+# for i in high_Grad_rate:
+#     for n in i:
+#         print(i)
+    # for n in :
+
+    #     print(high_Grad_rate[i])
+    #     # if high_Grad_rate > high_Grad_rate["Name"]:
+
+    #     #     print("swaped")
+    #     #     # Swap elements if they are in the wrong order
+    #     #     high_Grad_rate[i], high_Grad_rate[i + 1] = high_Grad_rate[i + 1], high_Grad_rate[i]
 
 
 
+# def bubble_sort_df(df, column_name):
+#     print('In df')
+#     for i in range(len(df) - 1):
+#         print('first loop', (i-1))
 
+#         # for j in range(len(df) - i - 1):
+#         # print('secoend loop')
+#         if df.loc[i, column_name] > df.loc[i + 1, column_name]:
+#             print('if')
+#             df.loc[i], df.loc[i + 1] = df.loc[i + 1].copy(), df.loc[i].copy()
+
+#     return df
+
+
+
+# df_sorted = bubble_sort_df(high_Grad_rate, 'Name')
+# print(high_Grad_rate)
+# print(df_sorted)
+
+# print('made it')
+
+
+"""
 ############-----------this whole section is for a scatter plot------------#############
 #the blue and green section is just reversed of eachother, the red is having the 
 plt.scatter(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"], high_Grad_rate["College_Graduation_Rate_rP_gP_p75"], c="Blue")
@@ -64,18 +206,48 @@ for i, label in enumerate(high_Grad_rate["Name"]):
     #here is for if the value is new york it would lable there
     if(high_Grad_rate["Name"][i] == "New York"):
         plt.annotate(label, (high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i], high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i]))
-
-
-
 #this is getting the lable for new your on the low income table
 for i, label in enumerate(low_Grad_rate["Name"]):
     if(low_Grad_rate["Name"][i] == "New York"):
         plt.annotate(label, (low_Grad_rate["College_Graduation_Rate_rP_gP_p25"][i], low_Grad_rate["College_Graduation_Rate_rP_gP_p25"][i]))
 
+"""
+
+#sorted_high.groupby(sorted_high["College_Graduation_Rate_rP_gP_p75"])
+
+# sorted_high.sum()
+
+
+#print(sorted_high["College_Graduation_Rate_rP_gP_p75"].sum() / total)
+#print(sorted_Low["College_Graduation_Rate_rP_gP_p25"].sum() / total)
+
+
+#plt.scatter((sorted_high["College_Graduation_Rate_rP_gP_p75"].sum() / total), (sorted_high["College_Graduation_Rate_rP_gP_p75"].sum() / total), c="Green")
+#plt.scatter((sorted_Low["College_Graduation_Rate_rP_gP_p25"].sum() / total), (sorted_Low["College_Graduation_Rate_rP_gP_p25"].sum() / total), c="Red")
+
+#plt.bar((sorted_high["College_Graduation_Rate_rP_gP_p75"].sum() / total), (sorted_Low["College_Graduation_Rate_rP_gP_p25"].sum() / total))
+#plt.bar((sorted_Low["College_Graduation_Rate_rP_gP_p25"].sum() / total), (sorted_high["College_Graduation_Rate_rP_gP_p75"].sum() / total))
+
+# sorted_high["College_Graduation_Rate_rP_gP_p75"].hist(1, bins=1000)
+# sorted_high[1].hist(dist2, bins=n_bins)
+
+#plt.hist(sorted_high["College_Graduation_Rate_rP_gP_p75"], sorted_Low["College_Graduation_Rate_rP_gP_p25"])
+#plt.scatter(sorted_high["College_Graduation_Rate_rP_gP_p75"], sorted_Low["College_Graduation_Rate_rP_gP_p25"], c="Blue")
+
+#plt.scatter(sorted_Low["College_Graduation_Rate_rP_gP_p25"], sorted_high["College_Graduation_Rate_rP_gP_p75"], c="Red")
+# plt.scatter(sorted_Low["College_Graduation_Rate_rP_gP_p25"], sorted_Low["College_Graduation_Rate_rP_gP_p25"], c="Green")
+
+
+# for i, label in enumerate(sorted_high["Name"]):
+#     if(sorted_high["Name"][i] == "New York"):
+#         print(sorted_high["Name"][i])
+#         plt.annotate(label, (sorted_high["College_Graduation_Rate_rP_gP_p75"][i], sorted_high["College_Graduation_Rate_rP_gP_p75"][i]))
+
+
 
 
 #this is how we will lable all the items
-plt.xlabel('Graduation rate: L,H,H,L')
-plt.ylabel('Graduation rate: H,L,H,L')
+# plt.xlabel('Graduation rate')
+# plt.ylabel('Graduation rate')
 
-plt.show()
+# plt.show()
