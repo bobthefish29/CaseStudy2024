@@ -3,84 +3,16 @@
 #Kerry
 
 
-#FOr the next person to look at this, im going to toss in the towel for rn, its been like 7 hours straght my brain is fryed
-
-#ill pick up with the lists tmr
-
-
-#This is where the main program is going to live,
-
-#i just hope we dont have to bring it into anaconda to make it run or anything
-
-
 
 ##################--------------------Imports--------------------------##########################
+import math
 import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
 
 
 ##################--------------------Vars--------------------------##########################
-addbrevLIst = ["RI"]
 
-abbreviation_to_name = {
-    "AK": "Alaska",
-    "AL": "Alabama",
-    "AR": "Arkansas",
-    "AZ": "Arizona",
-    "CA": "California",
-    "CO": "Colorado",
-    "CT": "Connecticut",
-    "DE": "Delaware",
-    "FL": "Florida",
-    "GA": "Georgia",
-    "HI": "Hawaii",
-    "IA": "Iowa",
-    "ID": "Idaho",
-    "IL": "Illinois",
-    "IN": "Indiana",
-    "KS": "Kansas",
-    "KY": "Kentucky",
-    "LA": "Louisiana",
-    "MA": "Massachusetts",
-    "MD": "Maryland",
-    "ME": "Maine",
-    "MI": "Michigan",
-    "MN": "Minnesota",
-    "MO": "Missouri",
-    "MS": "Mississippi",
-    "MT": "Montana",
-    "NC": "North Carolina",
-    "ND": "North Dakota",
-    "NE": "Nebraska",
-    "NH": "New Hampshire",
-    "NJ": "New Jersey",
-    "NM": "New Mexico",
-    "NV": "Nevada",
-    "NY": "New York",
-    "OH": "Ohio",
-    "OK": "Oklahoma",
-    "OR": "Oregon",
-    "PA": "Pennsylvania",
-    "RI": "Rhode Island",
-    "SC": "South Carolina",
-    "SD": "South Dakota",
-    "TN": "Tennessee",
-    "TX": "Texas",
-    "UT": "Utah",
-    "VA": "Virginia",
-    "VT": "Vermont",
-    "WA": "Washington",
-    "WI": "Wisconsin",
-    "WV": "West Virginia",
-    "WY": "Wyoming",
-    "DC": "District of Columbia",
-    "AS": "American Samoa",
-    "GU": "Guam GU",
-    "MP": "Northern Mariana Islands",
-    "PR": "Puerto Rico PR",
-    "VI": "U.S. Virgin Islands"
-}
 
 #print(len(abbreviation_to_name))
 
@@ -89,29 +21,203 @@ abbreviation_to_name = {
 high_Grad_rate = pd.read_csv('Data/high income.csv')
 low_Grad_rate = pd.read_csv('Data/low income.csv')
 
-#################---------This is adding the whole city csv
+#################---------This is adding the whole city csv-----------------------
 all_City_csv = pd.read_csv('Data/uscities.csv')
 all_city_arrary = all_City_csv.to_numpy()
-# print(all_city_arrary[12][0])
+
+high_series1 = pd.Series(all_City_csv["city"])
+high_series2 = pd.Series(high_Grad_rate["Name"])
+
+low_series1 = pd.Series(all_City_csv["city"])
+low_series2 = pd.Series(low_Grad_rate["Name"])
+
+#Find common elements
+common_high_elements = np.intersect1d(high_series1, high_series2)
+common_low_elements = np.intersect1d(low_series1, low_series2)
+
+#Convert the result to a DataFrame
+matching_df_high = pd.DataFrame(common_high_elements, columns=['city'])
+matching_df_low = pd.DataFrame(common_low_elements, columns=['city'])
+
+
+#the two functions here are really the same code, it just incase the matching dataFrames have a different value it would show itn in the low or high
+def find_Town_high(townadbv):
+    appenedList = []
+    for i in range(0, len(all_City_csv)):
+        if(all_city_arrary[i][2] == townadbv):
+            #this if statment------------VVVVVVVVVVV
+            if(all_city_arrary[i][1] in matching_df_high.values):
+                appenedList.append(all_city_arrary[i][1])
+    return appenedList
+def find_Town_low(townadbv):
+    appenedList = []
+    for i in range(0, len(all_City_csv)):
+        if(all_city_arrary[i][2] == townadbv):
+            #this if statment------------VVVVVVVVVVV
+            if(all_city_arrary[i][1] in matching_df_low.values):
+                appenedList.append(all_city_arrary[i][1])
+    return appenedList
+
+#this is just for returning the aberage of the the highlist towns
+def find_avg_high_gradRate(highList):
+    total =0
+    for i in range(0, len(highList)):
+        for l in range(0, len(high_Grad_rate["Name"])):
+            if(highList[i] == high_Grad_rate["Name"][l]):
+                try:
+                    rate = float(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][l])
+                    # Check if the rate is NaN
+                    if not math.isnan(rate):
+                        total += rate
+                except ValueError:
+                    # Handle the case where conversion to float fails
+                    print(f"Invalid value for conversion: {high_Grad_rate['College_Graduation_Rate_rP_gP_p75'][l]}")
+    return total / len(highList)
+def find_avg_low_gradRate(lowList):
+    total =0
+    for i in range(0, len(lowList)):
+        for l in range(0, len(low_Grad_rate["Name"])):
+            if(lowList[i] == low_Grad_rate["Name"][l]):
+                try:
+                    rate = float(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"][l])
+                    # Check if the rate is NaN
+                    if not math.isnan(rate):
+                        total += rate
+                except ValueError:
+                    # Handle the case where conversion to float fails
+                    print(f"Invalid value for conversion: {low_Grad_rate['College_Graduation_Rate_rP_gP_p25'][l]}")
+    return total / len(lowList)
+
+###############################################################################################################################################
+
+riListHigh = find_Town_high('RI')
+riListlow = find_Town_high('RI')
+
+
+print(find_avg_high_gradRate(riListHigh))
+print(find_avg_low_gradRate(riListlow))
+
+
+# bigList = []
+
+# bigList.append(find_Town_high('LA'))
+# bigList.append(find_Town_high('RI'))
+
+# print(bigList)
+
+
+# # Rename columns in high_Grad_rate to match the columns in all_City_csv for merging
+# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
+
+# # Merge matching_df with df1_renamed
+# merged_df = matching_df.merge(df1_renamed, on='city', how='left', indicator=True)
+
+# # Filter rows that are only in the original DataFrame and not in the other
+# non_matching_df = merged_df[merged_df['_merge'] == 'left_only']
+
+# # Convert the non-matching DataFrame to a list of dictionaries
+# non_matching_list = non_matching_df.drop(columns=['_merge']).to_dict(orient='records')
+
+# print("\nNon-matching records:")
+# print(non_matching_list)
 
 
 
 
-wasIf = 0
-firstLoop = 0
 
-riList = []
-for i in range(0, len(all_city_arrary)):
 
-    if(all_city_arrary[i][2] == 'RI'):
-        riList.append(all_city_arrary[i][1])
+# high_series1 = pd.Series(all_City_csv["city"])
+# high_series2 = pd.Series(high_Grad_rate["Name"])
 
-    #for sn in range(0, len(addbrevLIst)):
+# # Find common elements
+# common_high_elements = np.intersect1d(high_series1, high_series2)
+# print("Common elements:", common_high_elements)
+
+# # Convert the result to a DataFrame
+# matching_df = pd.DataFrame(common_high_elements, columns=['city'])
+# print("Matching DataFrame:")
+# print(matching_df)
+
+# # Rename columns in high_Grad_rate to match the columns in all_City_csv for merging
+# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
+# print("Renamed DataFrame for merging:")
+# print(df1_renamed)
+
+# # Merge matching_df with df1_renamed
+# merged_df = matching_df.merge(df1_renamed, on='city', how='left', indicator=True)
+# print("Merged DataFrame:")
+# print(len(merged_df))
+
+# # Filter rows that are only in the original DataFrame and not in the other
+# non_matching_df = merged_df[merged_df['_merge'] == 'left_only']
+# print("Non-matching DataFrame:")
+# print(non_matching_df)
+
+# # Convert the non-matching DataFrame to a list of dictionaries
+# non_matching_list = non_matching_df.drop(columns=['_merge']).to_dict(orient='records')
+# print("\nNon-matching records:")
+# print(non_matching_list)
+
+
+# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
+
+# df1_renamed = df1_renamed.drop_duplicates()
+
+# matching_df = df1_renamed.merge(all_City_csv, on='city', how='inner')
+
+# df1_renamed = matching_df.drop_duplicates()
+
+# Print the resulting DataFrame with matching cities and their state abbreviations
+# print("Matching DataFrame:")
+# print(matching_df)
+
+
+
+
+
+
+
+# for i in common_high_elements_list:
+#     print(i)
+
+
+
+# print(all_City_csv["state_id"])
+
+
+# riList = []
+# for i in range(0, len(all_city_arrary)):
+
+#     if(all_city_arrary[i][2] == 'NY'):
+#         riList.append(all_city_arrary[i][1])
+
+# # print(riList)
+# # print(all_City_csv["state_id"])
+
+
+# riTotal = 0
+
+# for i in range(0, len(high_Grad_rate)):
+#     #print(high_Grad_rate['Name'][i])
+
+#     for r in riList:
+#         # print(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i])
+#         # print(r)
+#         if(high_Grad_rate['Name'][i] == r):
+#             print(r)
+#             # riTotal += high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i]
+
+
+# print(riTotal * 2)
+
+
+
+#     #for sn in range(0, len(addbrevLIst)):
         
-        #if(all_city_arrary[i][2] == addbrevLIst[sn]):
+#         #if(all_city_arrary[i][2] == addbrevLIst[sn]):
             
 
-        #all_city_arrary[i][2]
+#         #all_city_arrary[i][2]
 #     print(c)
 #     # nextLoop = 0
 #     # for i in high_Grad_rate["Name"]:
@@ -124,7 +230,7 @@ for i in range(0, len(all_city_arrary)):
 
     
 #     # firstLoop += 1
-print(riList)
+# print(riList)
 
 # for i in range(0,len(abbreviation_to_name)):
 #     for c in range(0, len(all_city_arrary)):
@@ -200,14 +306,6 @@ sorted_Low_Name = low_Grad_rate.sort_values(by=['Name'], ascending=True)
 ##############----------This is the total rec------------#########
 high_total_rec = len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"])-1
 low_total_rec = len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1
-
-
-
-
-
-
-
-
 
 
 
