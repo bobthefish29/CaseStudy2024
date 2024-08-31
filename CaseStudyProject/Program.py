@@ -11,11 +11,7 @@ import numpy as np
 import pandas as pd
 
 
-##################--------------------Vars--------------------------##########################
-
-
-#print(len(abbreviation_to_name))
-
+##################------------this is adding the csv files--------###############3
 
 #############---------This is just the csv data frams----------------------#########
 high_Grad_rate = pd.read_csv('Data/high income.csv')
@@ -25,40 +21,49 @@ low_Grad_rate = pd.read_csv('Data/low income.csv')
 all_City_csv = pd.read_csv('Data/uscities.csv')
 all_city_arrary = all_City_csv.to_numpy()
 
+##############--------this bit of code is for the functions that are going to be running-----------############3
+
+
+#this is just making the city and name data into a series so we could check if its in the other data
 high_series1 = pd.Series(all_City_csv["city"])
 high_series2 = pd.Series(high_Grad_rate["Name"])
 
+#just to have low (Just in case) 
 low_series1 = pd.Series(all_City_csv["city"])
 low_series2 = pd.Series(low_Grad_rate["Name"])
 
-#Find common elements
+#Find common elements in both high and low lists
 common_high_elements = np.intersect1d(high_series1, high_series2)
 common_low_elements = np.intersect1d(low_series1, low_series2)
 
-#Convert the result to a DataFrame
+#Convert the result to a DataFrame for both high and low
 matching_df_high = pd.DataFrame(common_high_elements, columns=['city'])
 matching_df_low = pd.DataFrame(common_low_elements, columns=['city'])
 
 
-#the two functions here are really the same code, it just incase the matching dataFrames have a different value it would show itn in the low or high
-def find_Town_high(townadbv):
+##############--------------Important functions--------------#############
+
+#the functions are really just the same thing but for high and low
+
+#This is making a list of the towns that are in both, of the dataFrams for (high,low) and wholeCityCSV
+def find_Town_high_list(StateADB):
     appenedList = []
     for i in range(0, len(all_City_csv)):
-        if(all_city_arrary[i][2] == townadbv):
+        if(all_city_arrary[i][2] == StateADB):
             #this if statment------------VVVVVVVVVVV
             if(all_city_arrary[i][1] in matching_df_high.values):
                 appenedList.append(all_city_arrary[i][1])
     return appenedList
-def find_Town_low(townadbv):
+def find_Town_low_list(StateADB):
     appenedList = []
     for i in range(0, len(all_City_csv)):
-        if(all_city_arrary[i][2] == townadbv):
+        if(all_city_arrary[i][2] == StateADB):
             #this if statment------------VVVVVVVVVVV
             if(all_city_arrary[i][1] in matching_df_low.values):
                 appenedList.append(all_city_arrary[i][1])
     return appenedList
 
-#this is just for returning the aberage of the the highlist towns
+#this is just for returning the aberage of the the highlist towns  find_avg_high_gradRate(This is the town list you want)
 def find_avg_high_gradRate(highList):
     total =0
     for i in range(0, len(highList)):
@@ -72,6 +77,7 @@ def find_avg_high_gradRate(highList):
                 except ValueError:
                     # Handle the case where conversion to float fails
                     print(f"Invalid value for conversion: {high_Grad_rate['College_Graduation_Rate_rP_gP_p75'][l]}")
+    #returning the total devided by the len of the lists to get the avg
     return total / len(highList)
 def find_avg_low_gradRate(lowList):
     total =0
@@ -86,245 +92,234 @@ def find_avg_low_gradRate(lowList):
                 except ValueError:
                     # Handle the case where conversion to float fails
                     print(f"Invalid value for conversion: {low_Grad_rate['College_Graduation_Rate_rP_gP_p25'][l]}")
+    #returning the total devided by the len of the lists to get the avg
     return total / len(lowList)
 
-###############################################################################################################################################
-
-riListHigh = find_Town_high('RI')
-riListlow = find_Town_high('RI')
-
-
-print(find_avg_high_gradRate(riListHigh))
-print(find_avg_low_gradRate(riListlow))
-
-
-# bigList = []
-
-# bigList.append(find_Town_high('LA'))
-# bigList.append(find_Town_high('RI'))
-
-# print(bigList)
-
-
-# # Rename columns in high_Grad_rate to match the columns in all_City_csv for merging
-# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
-
-# # Merge matching_df with df1_renamed
-# merged_df = matching_df.merge(df1_renamed, on='city', how='left', indicator=True)
-
-# # Filter rows that are only in the original DataFrame and not in the other
-# non_matching_df = merged_df[merged_df['_merge'] == 'left_only']
-
-# # Convert the non-matching DataFrame to a list of dictionaries
-# non_matching_list = non_matching_df.drop(columns=['_merge']).to_dict(orient='records')
-
-# print("\nNon-matching records:")
-# print(non_matching_list)
-
-
-
-
-
-
-# high_series1 = pd.Series(all_City_csv["city"])
-# high_series2 = pd.Series(high_Grad_rate["Name"])
-
-# # Find common elements
-# common_high_elements = np.intersect1d(high_series1, high_series2)
-# print("Common elements:", common_high_elements)
-
-# # Convert the result to a DataFrame
-# matching_df = pd.DataFrame(common_high_elements, columns=['city'])
-# print("Matching DataFrame:")
-# print(matching_df)
-
-# # Rename columns in high_Grad_rate to match the columns in all_City_csv for merging
-# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
-# print("Renamed DataFrame for merging:")
-# print(df1_renamed)
-
-# # Merge matching_df with df1_renamed
-# merged_df = matching_df.merge(df1_renamed, on='city', how='left', indicator=True)
-# print("Merged DataFrame:")
-# print(len(merged_df))
-
-# # Filter rows that are only in the original DataFrame and not in the other
-# non_matching_df = merged_df[merged_df['_merge'] == 'left_only']
-# print("Non-matching DataFrame:")
-# print(non_matching_df)
-
-# # Convert the non-matching DataFrame to a list of dictionaries
-# non_matching_list = non_matching_df.drop(columns=['_merge']).to_dict(orient='records')
-# print("\nNon-matching records:")
-# print(non_matching_list)
-
-
-# df1_renamed = high_Grad_rate.rename(columns={'Name': 'city'})
-
-# df1_renamed = df1_renamed.drop_duplicates()
-
-# matching_df = df1_renamed.merge(all_City_csv, on='city', how='inner')
-
-# df1_renamed = matching_df.drop_duplicates()
-
-# Print the resulting DataFrame with matching cities and their state abbreviations
-# print("Matching DataFrame:")
-# print(matching_df)
-
-
-
-
-
-
-
-# for i in common_high_elements_list:
-#     print(i)
-
-
-
-# print(all_City_csv["state_id"])
-
-
-# riList = []
-# for i in range(0, len(all_city_arrary)):
-
-#     if(all_city_arrary[i][2] == 'NY'):
-#         riList.append(all_city_arrary[i][1])
-
-# # print(riList)
-# # print(all_City_csv["state_id"])
-
-
-# riTotal = 0
-
-# for i in range(0, len(high_Grad_rate)):
-#     #print(high_Grad_rate['Name'][i])
-
-#     for r in riList:
-#         # print(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i])
-#         # print(r)
-#         if(high_Grad_rate['Name'][i] == r):
-#             print(r)
-#             # riTotal += high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][i]
-
-
-# print(riTotal * 2)
-
-
-
-#     #for sn in range(0, len(addbrevLIst)):
-        
-#         #if(all_city_arrary[i][2] == addbrevLIst[sn]):
-            
-
-#         #all_city_arrary[i][2]
-#     print(c)
-#     # nextLoop = 0
-#     # for i in high_Grad_rate["Name"]:
-        
-#     #     if(i == c):
-#     #         print(firstLoop,'',nextLoop, "it was in at ", c, wasIf)
-#     #         wasIf += 1
-
-#     #     nextLoop += 1
-
-    
-#     # firstLoop += 1
-# print(riList)
-
-# for i in range(0,len(abbreviation_to_name)):
-#     for c in range(0, len(all_city_arrary)):
-#         print(i,c)
-
-# print(np.isin(all_city_arrary[1][1], all_city_arrary[0][0]))
-
-# if(np.isin(all_city_arrary[0][0], all_city_arrary[0][0])):
-#     print('me')
-# else:
-#     print('not me')
-
-#print(all_city_arrary[0])
-
-#running 30k times or each city is being persented
-
-
-# for i in range(0, len(high_Grad_rate)):
-#     for c in all_City_csv["city"]:
-#         print(i,' ',c)
-
-
-# for i in range(0, len(all_city_arrary)):
-
-#     for c in all_City_csv["city"]:
-#         print(c)
-#         # if(all_city_arrary[i][0] == c):
-#         #     print("is in", c ," with ", i)
-#         #     print(all_city_arrary[i])
-#     # if(np.isin(i, all_City_csv["city"])):
-        
-
-
-
-# for i in range(0, len(all_city_arrary)):
-
-#     for n in high_Grad_rate["Name"]:
-#         print(n)
-
-#     print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\nHERE", i)
-
-    
-
-#     # if(np.isin(all_City_csv["city"].any(), i)):
-#     #     print(i)
-#     # else:
-#     #     print("umm")
-
-
-
-# if(np.isin(high_Grad_rate["Name"].any(), all_city_arrary[0] )):
-#     print('True')
-
-
-#     # if(all_city_arrary[indexer][0] == ):
-#     #     print(i)
-
-
-
-
-#     indexer += 1
-
-#     # if(i == "RI"):
-#     #     print(all_City_csv["city"])
-
-
-
-
-#################-------------------This is the sorted by the names----------------------###################
-sorted_high_Name = high_Grad_rate.sort_values(by=['Name'], ascending=True)
-sorted_Low_Name = low_Grad_rate.sort_values(by=['Name'], ascending=True)
-
-##############----------This is the total rec------------#########
-high_total_rec = len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"])-1
-low_total_rec = len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1
-
-
-
-
-##############----------This is the avg of the american-----------#########
-avg_of_america_high = high_Grad_rate["College_Graduation_Rate_rP_gP_p75"].sum() / high_total_rec
-avg_of_america_low = low_Grad_rate["College_Graduation_Rate_rP_gP_p25"].sum() / low_total_rec
-
-plt.scatter(avg_of_america_high, avg_of_america_high)
-plt.scatter(avg_of_america_low, avg_of_america_low)
-
-plt.title('Graduation Rate: Low income and high income familys')
-
+#This is to find the state avg, based on the abreavation EX.('RI') you put in
+def find_avgHigh_based_On_adv(highadb):
+    total = 0
+    stateAdb = find_Town_high_list(highadb)
+    for i in range(0, len(stateAdb)):
+        for l in range(0, len(high_Grad_rate["Name"])):
+            if(stateAdb[i] == high_Grad_rate["Name"][l]):
+                try:
+                    rate = float(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"][l])
+                    # Check if the rate is NaN
+                    if not math.isnan(rate):
+                        total += rate
+                except ValueError:
+                    # Handle the case where conversion to float fails
+                    print(f"Invalid value for conversion: {high_Grad_rate['College_Graduation_Rate_rP_gP_p75'][l]}")
+    return total / len(stateAdb)
+def find_avgLow_based_On_adv(lowadb):
+    total = 0
+    stateAdb = find_Town_low_list(lowadb)
+    for i in range(0, len(stateAdb)):
+        for l in range(0, len(low_Grad_rate["Name"])):
+            if(stateAdb[i] == low_Grad_rate["Name"][l]):
+                try:
+                    rate = float(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"][l])
+                    # Check if the rate is NaN
+                    if not math.isnan(rate):
+                        total += rate
+                except ValueError:
+                    # Handle the case where conversion to float fails
+                    print(f"Invalid value for conversion: {low_Grad_rate['College_Graduation_Rate_rP_gP_p25'][l]}")
+    return total / len(stateAdb)
+
+
+##############----------This is the avg low vs the avg high in america all of america-----------#########
+
+###########------------------------the first graph is to show what it would look like on a scatter plot---------##########
+avg_of_america_high = high_Grad_rate["College_Graduation_Rate_rP_gP_p75"].sum() / (len(high_Grad_rate["College_Graduation_Rate_rP_gP_p75"]) - 1)
+avg_of_america_low = low_Grad_rate["College_Graduation_Rate_rP_gP_p25"].sum() / (len(low_Grad_rate["College_Graduation_Rate_rP_gP_p25"]) - 1)
+#green is high, red is low income
+plt.scatter(avg_of_america_high, avg_of_america_high, c='green', label='High')
+plt.scatter(avg_of_america_low, avg_of_america_low, c='red', label='Low')
+plt.title('Graduation Rate for: Low income and high income familys')
 plt.xlabel('Graduration rate')
 plt.ylabel('Graduration rate')
-
-
+plt.text(avg_of_america_high, avg_of_america_high, "{0:.2f}".format(avg_of_america_high), fontsize=10, ha='right')
+plt.text(avg_of_america_low, avg_of_america_low, "{0:.2f}".format(avg_of_america_low), fontsize=10, ha='right')
+plt.legend()
 plt.show()
 
+
+#########################--------this graph is to show what it would look like in a bar graph--------############3
+#adding the data for the bargraph
+categories = ['High Income', 'Low Income']
+averages = [avg_of_america_high, avg_of_america_low]
+#green is high, red is low income
+colors = ['green', 'red']
+plt.bar(categories, averages, color=colors)
+plt.title('Graduation Rate for Low and High Income Families')
+plt.xlabel('Income Category')
+plt.ylabel('Graduation Rate')
+# Add text annotations on the bars
+for i, value in enumerate(averages):
+    plt.text(i, value, "{0:.2f}".format(value), ha='center', va='bottom')
+plt.show()
+
+
+
+
+################------------this section is for the different states of america--------------###########
+#########--------this is if we want it to be a scatter plot-----------------#########
+#its hard to fallow
+
+#there is no data for HI so we cant use it lol
+states = [
+    'AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 
+    'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD',
+    'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ',
+    'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC',
+    'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'
+]
+for state in states:
+    # print(state)
+    avg_high = find_avgHigh_based_On_adv(state)
+    avg_low = find_avgLow_based_On_adv(state)
+    # Scatter plot
+    plt.scatter(avg_high, avg_low, label=state)
+    # Add text labels
+    plt.text(avg_high, avg_low, state, fontsize=9, ha='right')
+
+plt.ylabel('Low Income : Graduation Rate')
+plt.xlabel('High Income : Graduation Rate')
+
+# Show the plot
+plt.show()
+
+
+#################----------This is if we want the data to be in a bar graph-----------##################
+#this is a lot easer to fallo
+
+#this is calulationg the avarage for each state and making it into a list for both high and low
+high_income_avgs = [find_avgHigh_based_On_adv(state) for state in states]
+low_income_avgs = [find_avgLow_based_On_adv(state) for state in states]
+
+#This is just making the data for the bar graph to show what we want
+x = np.arange(len(states))
+width = 0.4  # Width of bars
+
+#This is making the bar graph
+fig, graph = plt.subplots(figsize=(14, 8))
+highIncome = graph.bar(x - width/2, high_income_avgs, width, label='High Income', color='Green')
+lowIncome = graph.bar(x + width/2, low_income_avgs, width, label='Low Income', color='red')
+
+# Add titles and labels
+graph.set_xlabel('State')
+graph.set_ylabel('Graduation Rate')
+graph.set_title('Graduation Rates by State for High and Low Income Families')
+
+# Add x-tick labels
+graph.set_xticks(x)
+graph.set_xticklabels(states, rotation=90)
+
+# Add legend
+graph.legend()
+
+# Add text labels
+for bars in [highIncome, lowIncome]:
+    for bar in bars:
+        height = bar.get_height()
+        graph.text(bar.get_x() + bar.get_width() / 2.0, height, f'{height:.2f}', ha='center', va='bottom')
+
+# Show the plot
+plt.tight_layout()#just making it close together
+plt.show()
+
+
+
+
+
+
+#################################--------------End of project----------################################################
+
+
+
+
+
+
+#this section of code is the dark space, its stuff that i was playing around with and just left the comment incase i want to come back to it
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+# plt.scatter(find_avgHigh_based_On_adv('AL'), find_avgLow_based_On_adv('AL'), label="AL")
+# plt.scatter(find_avgHigh_based_On_adv('AK'), find_avgLow_based_On_adv('AK'))
+# plt.scatter(find_avgHigh_based_On_adv('AZ'), find_avgLow_based_On_adv('AZ'))
+# plt.scatter(find_avgHigh_based_On_adv('AR'), find_avgLow_based_On_adv('AR'))
+
+
+# plt.scatter(find_avgHigh_based_On_adv('CA'), find_avgLow_based_On_adv('CA'))
+# plt.scatter(find_avgHigh_based_On_adv('CO'), find_avgLow_based_On_adv('CO'))
+# plt.scatter(find_avgHigh_based_On_adv('CT'), find_avgLow_based_On_adv('CT'))
+
+# plt.scatter(find_avgHigh_based_On_adv('DE'), find_avgLow_based_On_adv('DE'))
+# plt.scatter(find_avgHigh_based_On_adv('DC'), find_avgLow_based_On_adv('DC'))
+
+# plt.scatter(find_avgHigh_based_On_adv('FL'), find_avgLow_based_On_adv('FL'))
+
+
+
+# Georgia: GA 
+# Hawaii: HI 
+# Idaho: ID 
+# Illinois: IL 
+# Indiana: IN 
+# Iowa: IA 
+# Kansas: KS 
+# Kentucky: KY 
+# Louisiana: LA 
+# Maine: ME 
+# Maryland: MD 
+# Massachusetts: MA 
+# Michigan: MI 
+# Minnesota: MN 
+# Mississippi: MS 
+# Missouri: MO 
+# Montana: MT 
+# Nebraska: NE 
+# Nevada: NV 
+# New Hampshire: NH 
+# New Jersey: NJ 
+# New Mexico: NM 
+# New York: NY 
+
+
+
+# plt.scatter(find_avgHigh_based_On_adv('RI'), find_avgLow_based_On_adv('RI'), c='green')
+# plt.scatter(find_avgHigh_based_On_adv('CA'), find_avgLow_based_On_adv('CA'), c='green')
+# plt.scatter(find_avgHigh_based_On_adv('MA'), find_avgLow_based_On_adv('MA'), c='green')
+# plt.scatter(find_avgHigh_based_On_adv('CT'), find_avgLow_based_On_adv('CT'), c='green')
+
+
+
+# plt.scatter(find_avgLow_based_On_adv('NY'), find_avgLow_based_On_adv('NY'), c='Red')
+# plt.scatter(find_avgLow_based_On_adv('RI'), find_avgLow_based_On_adv('RI'), c='Red')
+# plt.scatter(find_avgLow_based_On_adv('CA'), find_avgLow_based_On_adv('CA'), c='Red')
+# plt.scatter(find_avgLow_based_On_adv('MA'), find_avgLow_based_On_adv('MA'), c='Red')
+# plt.scatter(find_avgLow_based_On_adv('CT'), find_avgLow_based_On_adv('CT'), c='Red')
+
+
+# plt.xlabel('High Income Graduation Rate')
+# plt.ylabel('Low Income Graduation Rate')
+# plt.show()
 
 ##################--------------------Functions--------------------------##########################
 
